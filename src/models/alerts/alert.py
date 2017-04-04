@@ -5,8 +5,6 @@ from src.common.database import Database
 import src.models.alerts.constants as AlertConstants
 from src.models.items.item import Item
 
-__author__ = 'jslvtr'
-
 
 class Alert(object):
     def __init__(self, user_email, price_limit, item_id, active=True, last_checked=None, _id=None):
@@ -18,7 +16,7 @@ class Alert(object):
         self._id = uuid.uuid4().hex if _id is None else _id
 
     def __repr__(self):
-        return "<Alert for {} on item {} with price {}>".format(self.user_email, self.item.name, self.price_limit)
+        return "<Alert for {} on item {} with price {}, last_checked: {}>".format(self.user_email, self.item.name, self.price_limit, self.last_checked)
 
     def send(self):
         return requests.post(
@@ -28,7 +26,8 @@ class Alert(object):
                 "from": AlertConstants.FROM,
                 "to": self.user_email,
                 "subject": "Price limit reached for {}".format(self.item.name),
-                "text": "We've found a deal! ({}).".format(self.item.url)
+                "text": "We've found a deal! ({}). To navigate to the alert, visit {}".format(
+                    self.item.url, "http://pricing.bdapps.com/alerts/{}".format(self._id))
             }
         )
 
@@ -38,7 +37,7 @@ class Alert(object):
         return [cls(**elem) for elem in Database.find(AlertConstants.COLLECTION,
                                                       {"last_checked":
                                                            {"$lte": last_updated_limit},
-                                                  "active": True
+                                                       "active": True
                                                        })]
 
     def save_to_mongo(self):

@@ -1,7 +1,5 @@
 from flask import Blueprint
 
-__author__ = 'jslvtr'
-
 
 item_blueprint = Blueprint('items', __name__)
 

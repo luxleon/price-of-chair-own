@@ -4,9 +4,6 @@ from src.models.users.user import User
 import src.models.users.errors as UserErrors
 import src.models.users.decorators as user_decorators
 
-__author__ = 'jslvtr'
-
-
 user_blueprint = Blueprint('users', __name__)
 
 
@@ -23,7 +20,7 @@ def login_user():
         except UserErrors.UserError as e:
             return e.message
 
-    return render_template("users/login.jinja2")  # Send the user an error if their login was invalid
+    return render_template("users/login.jinja2")
 
 
 @user_blueprint.route('/register', methods=['GET', 'POST'])
@@ -39,14 +36,15 @@ def register_user():
         except UserErrors.UserError as e:
             return e.message
 
-    return render_template("users/register.jinja2")  # Send the user an error if their login was invalid
+    return render_template("users/register.jinja2") # Send the user to the page if the login was invalid
 
 
 @user_blueprint.route('/alerts')
 @user_decorators.requires_login
 def user_alerts():
     user = User.find_by_email(session['email'])
-    return render_template("users/alerts.jinja2", alerts=user.get_alerts())
+    alerts = user.get_alerts()
+    return render_template('users/alerts.jinja2', alerts=alerts)
 
 
 @user_blueprint.route('/logout')
@@ -56,6 +54,5 @@ def logout_user():
 
 
 @user_blueprint.route('/check_alerts/<string:user_id>')
-@user_decorators.requires_login
 def check_user_alerts(user_id):
     pass

@@ -1,4 +1,3 @@
-__author__ = 'jslvtr'
 
 
 class UserError(Exception):
@@ -20,3 +19,5 @@ class UserAlreadyRegisteredError(UserError):
 
 class InvalidEmailError(UserError):
     pass
+
+

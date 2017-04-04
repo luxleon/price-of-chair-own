@@ -1,12 +1,12 @@
-import uuid
-from bs4 import BeautifulSoup
-import requests
 import re
+import uuid
+
+import requests
+from bs4 import BeautifulSoup
+
 from src.common.database import Database
 import src.models.items.constants as ItemConstants
 from src.models.stores.store import Store
-
-__author__ = 'jslvtr'
 
 
 class Item(object):
@@ -31,7 +31,7 @@ class Item(object):
 
         pattern = re.compile("(\d+.\d+)")
         match = pattern.search(string_price)
-        self.price = float(match.group())
+        self.price = float(match.group().replace(",", ""))
 
         return self.price
 

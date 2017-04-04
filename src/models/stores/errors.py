@@ -1,4 +1,3 @@
-__author__ = 'jslvtr'
 
 
 class StoreException(Exception):
